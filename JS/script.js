@@ -101,39 +101,27 @@ function parseCSV(csv) {
 
 // Convertit une ligne du Sheet en objet événement
 function sheetRowToEvent(row) {
-  console.log("🔑 Clés du row:", Object.keys(row));
-  console.log("📋 formUrl brut:", JSON.stringify(row.formUrl));
-  console.log("📋 inscription brut:", JSON.stringify(row.inscription));
+  // Récupère formUrl quelle que soit la casse
+  const formUrl = (row.formUrl || row.formurl || row.FormUrl || row.FORMURL || '').trim();
   
-  const type = (row.type || 'default').toLowerCase().trim();
-  const color = TYPE_COLORS[type] || TYPE_COLORS.default;
-
-  
-  // Construire l'horaire à partir de horaire_debut et horaire_fin
-  let horaire = '';
-  if (row.horaire_debut) {
-    horaire = row.horaire_debut;
-    if (row.horaire_fin) horaire += ' - ' + row.horaire_fin;
-  }
-
-  const event = {
-    title: row.titre,
-    start: row.debut,
-    color: color,
+  return {
+    id: Math.random().toString(36).substr(2, 9),
+    title: row.titre || '',
+    start: row.debut || '',
+    end: row.fin || '',
+    color: TYPE_COLORS[row.type?.toLowerCase()] || TYPE_COLORS.default,
     extendedProps: {
-      description: row.description || '',
-      type: type,
-      lieu: row.lieu || '',
-      horaire: horaire,
-      inscription: (row.inscription || '').toLowerCase().trim().replace(/^"|"$/g, '') === 'oui',
-      formurl: (row.formurl || '').trim().replace(/^"|"$/g, '')
+      horaire_debut: row.horaire_debut || '',
+      horaire_fin:   row.horaire_fin || '',
+      lieu:          row.lieu || '',
+      type:          row.type || '',
+      inscription:   (row.inscription || '').toLowerCase().trim() === 'oui',
+      formUrl:       formUrl,   // ← corrigé ici
+      description:   row.description || ''
     }
   };
-
-  if (row.fin) event.end = row.fin;
-
-  return event;
 }
+
 
 
 // Fetch les données du Google Sheet
@@ -368,6 +356,7 @@ displayUpcomingEventsWithCTA(sheetEvents);
   // 5. Swiper galerie
   initSwiper();
 });
+
 
 
 
