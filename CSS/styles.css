@@ -293,8 +293,8 @@ body {
   border-radius: var(--radius);
   padding: 28px 24px;
   display: flex;
-  flex-direction: column;      /* Empilage vertical */
-  align-items: center;         /* Tout centré */
+  flex-direction: column;      /* ← Clé : empilage vertical */
+  align-items: center;
   text-align: center;
   gap: 0;
   border: 1px solid rgba(165, 180, 252, 0.1);
@@ -1393,6 +1393,7 @@ body {
     gap: 16px;
   }
 }
+
 
 
 
