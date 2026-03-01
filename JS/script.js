@@ -190,7 +190,7 @@ if (calendarEl) {
 // ================================
 //   PROCHAINS ÉVÉNEMENTS (sidebar)
 // ================================
-const DELTA_DAYS = 15;
+const DELTA_DAYS = 30;
 
 function toUtcDateOnly(d) {
   const dt = (d instanceof Date) ? d : new Date(d);
@@ -239,7 +239,7 @@ function displayUpcomingEventsWithCTA(events) {
     const evDate = new Date(year, month - 1, day);
     const todayLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const diffDays = Math.round((evDate - todayLocal) / (1000 * 60 * 60 * 24));
-    
+
     const type = (ev.extendedProps?.type || '').toLowerCase();
     const isCompetition = type.startsWith('comp');
     const hasFormUrl = ev.extendedProps?.formUrl && ev.extendedProps.formUrl.trim() !== '';
@@ -262,7 +262,7 @@ function displayUpcomingEventsWithCTA(events) {
     else countdownStr = `⏳ Dans ${diffDays} jours`;
 
     let btnHtml = '';
-    if (hasFormUrl && diffDays <= DELTA_DAYS) {
+    if (hasFormUrl && diffDays <= 15) {
       btnHtml = `<a href="${ev.extendedProps.formUrl}" target="_blank" class="btn-inscription">S'inscrire</a>`;
     }
 
@@ -285,7 +285,6 @@ function displayUpcomingEventsWithCTA(events) {
     container.appendChild(card);
   });
 }
-
 
 
 // ================================
@@ -362,6 +361,7 @@ displayUpcomingEventsWithCTA(sheetEvents);
   // 5. Swiper galerie
   initSwiper();
 });
+
 
 
 
