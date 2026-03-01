@@ -190,7 +190,7 @@ if (calendarEl) {
 // ================================
 //   PROCHAINS ÉVÉNEMENTS (sidebar)
 // ================================
-const DELTA_DAYS = 30;
+const DELTA_DAYS = 15;
 
 function toUtcDateOnly(d) {
   const dt = (d instanceof Date) ? d : new Date(d);
@@ -262,7 +262,7 @@ function displayUpcomingEventsWithCTA(events) {
     else countdownStr = `⏳ Dans ${diffDays} jours`;
 
     let btnHtml = '';
-    if (hasFormUrl && diffDays <= 15) {
+    if (hasFormUrl && diffDays <= DELTA_DAYS) {
       btnHtml = `<a href="${ev.extendedProps.formUrl}" target="_blank" class="btn-inscription">S'inscrire</a>`;
     }
 
@@ -362,3 +362,4 @@ displayUpcomingEventsWithCTA(sheetEvents);
   // 5. Swiper galerie
   initSwiper();
 });
+
