@@ -240,6 +240,14 @@ function displayUpcomingEventsWithCTA(events) {
     const todayLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const diffDays = Math.round((evDate - todayLocal) / (1000 * 60 * 60 * 24));
 
+    // 👇 AJOUTE CES LIGNES
+  console.log('--- Événement:', ev.title);
+  console.log('    diffDays:', diffDays);
+  console.log('    extendedProps:', ev.extendedProps);
+  console.log('    formUrl:', ev.extendedProps?.formUrl);
+  console.log('    hasFormUrl:', ev.extendedProps?.formUrl && ev.extendedProps.formUrl.trim() !== '');
+  console.log('    condition bouton:', ev.extendedProps?.formUrl && diffDays <= DELTA_DAYS);
+    
     const type = (ev.extendedProps?.type || '').toLowerCase();
     const isCompetition = type.startsWith('comp');
     const hasFormUrl = ev.extendedProps?.formUrl && ev.extendedProps.formUrl.trim() !== '';
@@ -362,4 +370,5 @@ displayUpcomingEventsWithCTA(sheetEvents);
   // 5. Swiper galerie
   initSwiper();
 });
+
 
