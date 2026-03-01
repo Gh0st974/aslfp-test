@@ -99,9 +99,14 @@ function parseCSV(csv) {
 
 // Convertit une ligne du Sheet en objet événement
 function sheetRowToEvent(row) {
+  console.log("🔑 Clés du row:", Object.keys(row));
+  console.log("📋 formUrl brut:", JSON.stringify(row.formUrl));
+  console.log("📋 inscription brut:", JSON.stringify(row.inscription));
+  
   const type = (row.type || 'default').toLowerCase().trim();
   const color = TYPE_COLORS[type] || TYPE_COLORS.default;
 
+  
   // Construire l'horaire à partir de horaire_debut et horaire_fin
   let horaire = '';
   if (row.horaire_debut) {
@@ -118,8 +123,8 @@ function sheetRowToEvent(row) {
       type: type,
       lieu: row.lieu || '',
       horaire: horaire,
-      inscription: (row.inscription || '').toLowerCase() === 'oui',
-      formUrl: row.formUrl || ''
+      inscription: (row.inscription || '').toLowerCase().trim().replace(/^"|"$/g, '') === 'oui',
+      formUrl: (row.formUrl || '').trim().replace(/^"|"$/g, '')
     }
   };
 
@@ -361,6 +366,7 @@ displayUpcomingEventsWithCTA(sheetEvents);
   // 5. Swiper galerie
   initSwiper();
 });
+
 
 
 
