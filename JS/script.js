@@ -126,7 +126,7 @@ function sheetRowToEvent(row) {
       lieu: row.lieu || '',
       horaire: horaire,
       inscription: (row.inscription || '').toLowerCase().trim().replace(/^"|"$/g, '') === 'oui',
-      formUrl: (row.formUrl || '').trim().replace(/^"|"$/g, '')
+      formurl: (row.formurl || '').trim().replace(/^"|"$/g, '')
     }
   };
 
@@ -368,6 +368,7 @@ displayUpcomingEventsWithCTA(sheetEvents);
   // 5. Swiper galerie
   initSwiper();
 });
+
 
 
 
