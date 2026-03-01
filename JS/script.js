@@ -39,7 +39,6 @@ if (burger && mobileNav) {
 // ================================
 const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5jflm0IqE_tgbyVcAhcg3WsDwFVu3P09KV3YzXSHk5qR2tyFvxxlKYPqlO4ea8pCWQ0DmCUjRiV3N/pub?output=csv';
 
-// Couleurs par type d'événement
 const TYPE_COLORS = {
   competition:  '#e74c3c',
   entrainement: '#3498db',
@@ -49,7 +48,6 @@ const TYPE_COLORS = {
   default:      '#6366f1'
 };
 
-// Emojis par sport
 const SPORT_ICONS = {
   badminton:    '🏸',
   basketball:   '🏀',
@@ -65,7 +63,6 @@ const SPORT_ICONS = {
   default:      '🏅'
 };
 
-// Parse le CSV en tableau d'objets
 function parseCSV(csv) {
   const lines = csv.trim().split('\n');
   if (lines.length < 2) return [];
@@ -73,7 +70,6 @@ function parseCSV(csv) {
   const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
 
   return lines.slice(1).map(line => {
-    // Gestion des virgules dans les champs entre guillemets
     const values = [];
     let current = '';
     let inQuotes = false;
@@ -96,35 +92,41 @@ function parseCSV(csv) {
       obj[h] = values[i] || '';
     });
     return obj;
-    }).filter(row => row.titre && row.debut);
+  }).filter(row => row.titre && row.debut);
 }
 
-// Convertit une ligne du Sheet en objet événement
 function sheetRowToEvent(row) {
   // Récupère formUrl quelle que soit la casse
   const formUrl = (row.formUrl || row.formurl || row.FormUrl || row.FORMURL || '').trim();
-  
-  return {
+  const type = (row.type || 'default').toLowerCase().trim();
+
+  // Construire l'horaire
+  let horaire = '';
+  if (row.horaire_debut) {
+    horaire = row.horaire_debut;
+    if (row.horaire_fin) horaire += ' - ' + row.horaire_fin;
+  }
+
+  const event = {
     id: Math.random().toString(36).substr(2, 9),
     title: row.titre || '',
     start: row.debut || '',
-    end: row.fin || '',
-    color: TYPE_COLORS[row.type?.toLowerCase()] || TYPE_COLORS.default,
+    color: TYPE_COLORS[type] || TYPE_COLORS.default,
     extendedProps: {
-      horaire_debut: row.horaire_debut || '',
-      horaire_fin:   row.horaire_fin || '',
+      description:   row.description || '',
+      type:          type,
       lieu:          row.lieu || '',
-      type:          row.type || '',
+      horaire:       horaire,
       inscription:   (row.inscription || '').toLowerCase().trim() === 'oui',
-      formUrl:       formUrl,   // ← corrigé ici
-      description:   row.description || ''
+      formUrl:       formUrl
     }
   };
+
+  if (row.fin) event.end = row.fin;
+
+  return event;
 }
 
-
-
-// Fetch les données du Google Sheet
 async function fetchSheetEvents() {
   try {
     const response = await fetch(SHEET_CSV_URL);
@@ -160,16 +162,18 @@ if (calendarEl) {
       month: 'Mois',
       list: 'Liste'
     },
-    events: [], // sera rempli dynamiquement
+    events: [],
     eventClick: function(info) {
       info.jsEvent.preventDefault();
       const props = info.event.extendedProps;
 
+      // Construire le message de détails
       let details = `📌 ${info.event.title}\n`;
       if (props.description) details += `\n📝 ${props.description}`;
-      if (props.lieu) details += `\n📍 ${props.lieu}`;
-      if (props.horaire) details += `\n🕐 ${props.horaire}`;
-      if (props.type) details += `\n🏷️ Type : ${props.type}`;
+      if (props.lieu)        details += `\n📍 ${props.lieu}`;
+      if (props.horaire)     details += `\n🕐 ${props.horaire}`;
+      if (props.type)        details += `\n🏷️ Type : ${props.type}`;
+
       if (props.inscription && props.formUrl) {
         details += `\n\n✅ Inscription ouverte !`;
         if (confirm(details + '\n\nVoulez-vous ouvrir le formulaire ?')) {
@@ -185,32 +189,17 @@ if (calendarEl) {
 // ================================
 //   PROCHAINS ÉVÉNEMENTS (sidebar)
 // ================================
-const DELTA_DAYS = 30;
-
-function toUtcDateOnly(d) {
-  const dt = (d instanceof Date) ? d : new Date(d);
-  return Date.UTC(dt.getUTCFullYear(), dt.getUTCMonth(), dt.getUTCDate());
-}
-
-function daysUntil(date) {
-  const todayUtc = toUtcDateOnly(new Date());
-  const targetUtc = toUtcDateOnly(date);
-  return Math.ceil((targetUtc - todayUtc) / (24 * 60 * 60 * 1000));
-}
-
 function displayUpcomingEventsWithCTA(events) {
   const container = document.getElementById('upcoming-events');
   if (!container) return;
 
-  // Date d'aujourd'hui en format string YYYY-MM-DD (local)
   const now = new Date();
-  const todayStr = now.getFullYear() + '-' + 
-    String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+  const todayStr = now.getFullYear() + '-' +
+    String(now.getMonth() + 1).padStart(2, '0') + '-' +
     String(now.getDate()).padStart(2, '0');
 
   console.log('🔍 Date aujourdhui:', todayStr);
 
-  // Filtrer les événements futurs en comparant les STRINGS (pas de Date())
   const futureEvents = events
     .filter(ev => {
       console.log('  🔎 Comparaison:', ev.title, ev.start, '>=', todayStr, '→', ev.start >= todayStr);
@@ -229,7 +218,6 @@ function displayUpcomingEventsWithCTA(events) {
   container.innerHTML = '';
 
   futureEvents.forEach(ev => {
-    // Parser la date SANS problème de timezone
     const [year, month, day] = ev.start.split('-').map(Number);
     const evDate = new Date(year, month - 1, day);
     const todayLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -237,50 +225,56 @@ function displayUpcomingEventsWithCTA(events) {
 
     const type = (ev.extendedProps?.type || '').toLowerCase();
     const isCompetition = type.startsWith('comp');
-    const hasFormUrl = ev.extendedProps?.formUrl && ev.extendedProps.formUrl.trim() !== '';
+
+    // ✅ Lecture de formUrl (cohérent avec sheetRowToEvent)
+    const formUrl = ev.extendedProps?.formUrl || '';
+    const hasFormUrl = formUrl.trim() !== '';
 
     const bulletColor = isCompetition ? '#e74c3c' : '#3498db';
-    const bulletIcon = isCompetition ? '🏆' : 'ℹ️';
+    const bulletIcon  = isCompetition ? '🏆' : 'ℹ️';
 
-    const dateStr = evDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    const dateStr = evDate.toLocaleDateString('fr-FR', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
 
-    // Utiliser l'horaire déjà construit dans sheetRowToEvent
-    const horaire = ev.extendedProps?.horaire || '';
+    const horaire  = ev.extendedProps?.horaire || '';
     const horaireStr = horaire ? `🕐 ${horaire}` : '';
 
-    const lieu = ev.extendedProps?.lieu || '';
+    const lieu    = ev.extendedProps?.lieu || '';
     const lieuStr = lieu ? `📍 ${lieu}` : '';
 
     let countdownStr = '';
-    if (diffDays === 0) countdownStr = "⏳ Aujourd'hui !";
+    if (diffDays === 0)      countdownStr = "⏳ Aujourd'hui !";
     else if (diffDays === 1) countdownStr = "⏳ Demain !";
-    else countdownStr = `⏳ Dans ${diffDays} jours`;
+    else                     countdownStr = `⏳ Dans ${diffDays} jours`;
 
+    // ✅ Bouton S'inscrire : inscription = oui ET formUrl rempli ET dans les 15 jours
     let btnHtml = '';
-    if (hasFormUrl && diffDays <= 15) {
-      btnHtml = `<a href="${ev.extendedProps.formUrl}" target="_blank" class="btn-inscription">S'inscrire</a>`;
+    if (ev.extendedProps?.inscription && hasFormUrl && diffDays <= 15) {
+      btnHtml = `<a href="${formUrl}" target="_blank" class="btn-inscription">S'inscrire</a>`;
     }
+
+    console.log(`🔘 ${ev.title} | inscription:`, ev.extendedProps?.inscription, '| formUrl:', formUrl, '| diffDays:', diffDays, '| bouton:', btnHtml !== '');
 
     const card = document.createElement('div');
     card.className = `upcoming-event-card type-${type.replace(/\s+/g, '-')}`;
     card.innerHTML = `
-  <span class="upcoming-event-date">${dateStr}</span>
-  <strong class="upcoming-event-title">${bulletIcon} ${ev.title}</strong>
-  <div class="upcoming-event-details">
-    <div class="upcoming-event-type-row">
-      <span style="color:${bulletColor}; font-weight:bold;">${isCompetition ? 'Compétition' : type}</span>
-      <span class="upcoming-event-countdown">${countdownStr}</span>
-    </div>
-    ${lieuStr ? `<span>${lieuStr}</span>` : ''}
-    ${horaireStr ? `<span>${horaireStr}</span>` : ''}
-  </div>
-  ${btnHtml}
-`;
+      <span class="upcoming-event-date">${dateStr}</span>
+      <strong class="upcoming-event-title">${bulletIcon} ${ev.title}</strong>
+      <div class="upcoming-event-details">
+        <div class="upcoming-event-type-row">
+          <span style="color:${bulletColor}; font-weight:bold;">${isCompetition ? 'Compétition' : type}</span>
+          <span class="upcoming-event-countdown">${countdownStr}</span>
+        </div>
+        ${lieuStr ? `<span>${lieuStr}</span>` : ''}
+        ${horaireStr ? `<span>${horaireStr}</span>` : ''}
+      </div>
+      ${btnHtml}
+    `;
 
     container.appendChild(card);
   });
 }
-
 
 // ================================
 //   SCROLL REVEAL
@@ -346,9 +340,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     calendar.render();
   }
 
- // 3. Afficher les prochains événements
-displayUpcomingEventsWithCTA(sheetEvents);
-
+  // 3. Afficher les prochains événements
+  displayUpcomingEventsWithCTA(sheetEvents);
 
   // 4. Animations
   initRevealAnimations();
@@ -356,11 +349,3 @@ displayUpcomingEventsWithCTA(sheetEvents);
   // 5. Swiper galerie
   initSwiper();
 });
-
-
-
-
-
-
-
-
