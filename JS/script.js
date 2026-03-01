@@ -1,3 +1,5 @@
+console.log("🚀 SCRIPT VERSION 2.0 - BOUTON DEBUG");
+
 // ================================
 //   HEADER SCROLL
 // ================================
@@ -366,6 +368,7 @@ displayUpcomingEventsWithCTA(sheetEvents);
   // 5. Swiper galerie
   initSwiper();
 });
+
 
 
 
