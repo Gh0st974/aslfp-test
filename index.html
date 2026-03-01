@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Association Sportive du LFP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/styles.css">
+    <!-- FullCalendar -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/locales/fr.global.min.js"></script>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+  </head>
+
+  <body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+      <div class="logo-section">
+        <a href="#hero" class="logo-link">
+          <img src="Img/Logos/logo-aslfp.png" alt="Logo AS LFP" class="logo">
+        </a>
+        <span class="as-title">AS du LFP</span>
+      </div>
+
+      <!-- Menu desktop -->
+      <nav class="main-nav desktop-nav">
+        <ul>
+          <li><a href="#hero">Accueil</a></li>
+          <li><a href="#activites">Activités</a></li>
+          <li><a href="#calendrier">Calendrier</a></li>
+          <li><a href="#inscription">Inscription</a></li>
+          <li><a href="galerie.html">Galerie 📸</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Bouton burger (visible uniquement sur mobile) -->
+      <button class="burger" aria-label="Ouvrir le menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Menu mobile (caché par défaut) -->
+      <nav class="main-nav mobile-nav">
+        <ul>
+          <li><a href="#hero">Accueil</a></li>
+          <li><a href="#activites">Activités</a></li>
+          <li><a href="#calendrier">Calendrier</a></li>
+          <li><a href="#inscription">Inscription</a></li>
+          <li><a href="galerie.html">Galerie 📸</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+    </div><!-- fin header-content -->
+  </div><!-- fin container -->
+</header><!-- fin header -->
+
+
+
+    <!-- SECTION 1 — Hero -->
+    <section class="hero" id="hero">
+      <div class="hero-background">
+        <img src="Img/Activités Section/Multisports.jpg" alt="Sport">
+      </div>
+      <div class="hero-content">
+        <div class="hero-text">
+          <h2>
+            Bienvenue à l'<span class="as-highlight">Association Sportive</span>
+            du <span class="highlight">LFP</span> !
+          </h2>
+          <p>
+            Bouge, partage et dépasse-toi — des activités pour tous les niveaux.<br>
+            Que tu sois débutant ou confirmé, il y a forcément un sport fait pour toi !
+          </p>
+          <a href="#inscription" class="btn">S'inscrire maintenant 🏆</a>
+        </div>
+      </div>
+      <div class="scroll-down">
+        <a href="#activites">↓</a>
+      </div>
+    </section>
+
+    <!-- SECTION 2 — Activités -->
+    <section class="activites" id="activites">
+      <div class="container">
+        <h2 class="section-title">Nos activités</h2>
+        <div class="underline"></div>
+
+        <div class="activites-grid">
+
+          <div class="activite-card">
+            <div class="activite-icon-wrapper">
+              <span style="font-size:2rem;">🏸</span>
+            </div>
+            <div>
+              <h3 class="activite-title">Badminton</h3>
+              <p class="activite-schedule">📅 Lundi — 12h à 13h</p>
+              <p class="activite-schedule"><span class="location">📍 Gymnase du lycée</span></p>
+              <div class="activite-details">
+                <span class="detail-badge">Tous niveaux</span>
+                <span class="detail-badge">1h</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="activite-card">
+            <div class="activite-icon-wrapper">
+              <span style="font-size:2rem;">⚽</span>
+            </div>
+            <div>
+              <h3 class="activite-title">Football</h3>
+              <p class="activite-schedule">📅 Mardi — 12h à 13h</p>
+              <p class="activite-schedule"><span class="location">📍 Terrain extérieur</span></p>
+              <div class="activite-details">
+                <span class="detail-badge">Tous niveaux</span>
+                <span class="detail-badge">1h</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="activite-card">
+            <div class="activite-icon-wrapper">
+              <span style="font-size:2rem;">🏀</span>
+            </div>
+            <div>
+              <h3 class="activite-title">Basketball</h3>
+              <p class="activite-schedule">📅 Mercredi — 12h à 13h</p>
+              <p class="activite-schedule"><span class="location">📍 Gymnase du lycée</span></p>
+              <div class="activite-details">
+                <span class="detail-badge">Tous niveaux</span>
+                <span class="detail-badge">1h</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="activite-card">
+            <div class="activite-icon-wrapper">
+              <span style="font-size:2rem;">🏐</span>
+            </div>
+            <div>
+              <h3 class="activite-title">Volleyball</h3>
+              <p class="activite-schedule">📅 Jeudi — 12h à 13h</p>
+              <p class="activite-schedule"><span class="location">📍 Gymnase du lycée</span></p>
+              <div class="activite-details">
+                <span class="detail-badge">Tous niveaux</span>
+                <span class="detail-badge">1h</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="activite-card">
+            <div class="activite-icon-wrapper">
+              <span style="font-size:2rem;">🏊</span>
+            </div>
+            <div>
+              <h3 class="activite-title">Natation</h3>
+              <p class="activite-schedule">📅 Vendredi — 12h à 13h</p>
+              <p class="activite-schedule"><span class="location">📍 Piscine municipale</span></p>
+              <div class="activite-details">
+                <span class="detail-badge">Tous niveaux</span>
+                <span class="detail-badge">1h</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="activite-card">
+            <div class="activite-icon-wrapper">
+              <span style="font-size:2rem;">🤸</span>
+            </div>
+            <div>
+              <h3 class="activite-title">Gymnastique</h3>
+              <p class="activite-schedule">📅 Vendredi — 13h à 14h</p>
+              <p class="activite-schedule"><span class="location">📍 Gymnase du lycée</span></p>
+              <div class="activite-details">
+                <span class="detail-badge">Tous niveaux</span>
+                <span class="detail-badge">1h</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3 — Calendrier -->
+<section class="calendrier-section" id="calendrier">
+  <div class="container">
+    <h2 class="section-title">Agenda & Événements</h2>
+    <div class="underline"></div>
+
+    <div class="calendrier-container">
+      <div id="calendar"></div>
+
+      <div class="upcoming-events">
+  <h3>📅 Prochains événements</h3>
+  <div class="events-list" id="upcoming-events">
+      <!-- Les événements seront ajoutés dynamiquement par JavaScript -->
+  </div>
+</div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- SECTION 4 — Inscription -->
+<section class="inscription-section" id="inscription">
+  <div class="container">
+    <h2 class="section-title">S'inscrire à une activité</h2>
+    <div class="underline"></div>
+    <p class="inscription-intro">
+      L'inscription est gratuite pour tous les élèves du lycée.<br>
+      Clique sur le bouton ci-dessous pour remplir le formulaire d'inscription !
+    </p>
+
+    <div class="inscription-cta">
+      <a href="https://forms.gle/kgza4nRy131NqJu58" target="_blank" class="btn btn-inscription-main">
+        📋 Remplir le formulaire d'inscription
+      </a>
+      <p class="inscription-note">
+        Le formulaire s'ouvre dans un nouvel onglet (Google Forms).<br>
+        Tu recevras une confirmation une fois ta demande traitée.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECTION GALERIE -->
+<section class="galerie" id="galerie">
+  <div class="container">
+    <h2 class="section-title">Galerie photos</h2>
+    <div class="underline"></div>
+    <p class="galerie-intro">Retrouvez les meilleurs moments de nos activités et événements !</p>
+
+    <div class="carousel-container">
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+
+          <div class="swiper-slide">
+            <div class="slide-content">
+              <img src="Img/Galerie/photo1.jpg" alt="Match de badminton" class="carousel-img" loading="lazy">
+              <div class="slide-caption">
+                <h4>Tournoi de badminton</h4>
+                <p>Janvier 2026</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="slide-content">
+              <img src="Img/Galerie/photo2.jpg" alt="Entraînement basketball" class="carousel-img" loading="lazy">
+              <div class="slide-caption">
+                <h4>Entraînement basketball</h4>
+                <p>Février 2026</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="slide-content">
+              <img src="Img/Galerie/photo3.jpg" alt="Sortie VTT" class="carousel-img" loading="lazy">
+              <div class="slide-caption">
+                <h4>Sortie VTT</h4>
+                <p>Mars 2026</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="slide-content">
+              <img src="Img/Galerie/photo4.jpg" alt="Nuit du volleyball" class="carousel-img" loading="lazy">
+              <div class="slide-caption">
+                <h4>Nuit du volleyball</h4>
+                <p>Mars 2026</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="slide-content">
+              <img src="Img/Galerie/photo5.jpg" alt="Course cross-country" class="carousel-img" loading="lazy">
+              <div class="slide-caption">
+                <h4>Cross-country</h4>
+                <p>Avril 2026</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Navigation -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+
+        <!-- Pagination -->
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- SECTION 5 — Contact -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <h2 class="section-title">Nous contacter</h2>
+        <div class="underline"></div>
+
+        <div class="contact-container">
+          <div class="contact-info">
+
+            <div class="contact-item">
+              <h3>📧 Email</h3>
+              <p><a href="mailto:as.lycee@email.fr" style="color:var(--accent);">as.lycee@email.fr</a></p>
+            </div>
+
+            <div class="contact-item">
+              <h3>📍 Où nous trouver</h3>
+              <p>Lycée — Salle de sport / Gymnase</p>
+            </div>
+
+            <div class="contact-item">
+              <h3>🕐 Permanences</h3>
+              <p>Lundi 12h-13h<br>Salle des profs de sport</p>
+            </div>
+
+          </div>
+
+          <div class="contact-map">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9914406081543!2d2.292292615509614!3d48.858370079287475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDjCsDUxJzMwLjEiTiAywr8xNyczMy4yIkU!5e0!3m2!1sfr!2sfr!4v1234567890"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Localisation du lycée">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+
+          <div class="logo-section">
+            <img src="Img/Logos/logo-aslfp.png" alt="Logo AS LFP" class="logo">
+            <span class="as-title">AS du LFP</span>
+          </div>
+
+          <nav class="footer-nav">
+            <a href="#hero">Accueil</a>
+            <a href="#activites">Activités</a>
+            <a href="#calendrier">Calendrier</a>
+            <a href="#inscription">Inscription</a>
+            <a href="galerie.html">Galerie</a>
+            <a href="#contact">Contact</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="#" title="Instagram">📸</a>
+            <a href="#" title="Twitter">🐦</a>
+            <a href="#" title="Facebook">👍</a>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2025 Association Sportive du LFP — Tous droits réservés</p>
+          <p style="margin-top:4px;">Fait avec ❤️ </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="JS/script.js"></script>
+    <script src="JS/galerie.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  </body>
+</html>
