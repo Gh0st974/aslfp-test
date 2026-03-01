@@ -307,21 +307,23 @@ body {
 }
 
 .activite-icon-wrapper {
-  background: rgba(165, 180, 252, 0.1);
-  border-radius: 14px;
-  width: 64px;
-  height: 64px;
+  background: #ffffff;          /* Fond blanc comme l'image */
+  border-radius: 50%;           /* Cercle parfait */
+  width: 72px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);  /* Ombre légère */
 }
 
 .activite-icon {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
 }
+
 
 .activite-title {
   font-size: 1.1rem;
@@ -1387,4 +1389,5 @@ body {
     gap: 16px;
   }
 }
+
 
