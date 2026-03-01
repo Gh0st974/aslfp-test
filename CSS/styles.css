@@ -291,10 +291,12 @@ body {
 .activite-card {
   background: var(--fond-carte);
   border-radius: var(--radius);
-  padding: 28px;
+  padding: 28px 24px;
   display: flex;
-  align-items: flex-start;
-  gap: 20px;
+  flex-direction: column;      /* Empilage vertical */
+  align-items: center;         /* Tout centré */
+  text-align: center;
+  gap: 0;
   border: 1px solid rgba(165, 180, 252, 0.1);
   box-shadow: var(--ombre);
   transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
@@ -307,58 +309,60 @@ body {
 }
 
 .activite-icon-wrapper {
-  background: #ffffff;          /* Fond blanc comme l'image */
-  border-radius: 50%;           /* Cercle parfait */
-  width: 72px;
-  height: 72px;
+  background: #ffffff;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.12);  /* Ombre légère */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+  margin-bottom: 20px;         /* Espace sous l'icône */
 }
 
 .activite-icon {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
 }
-
 
 .activite-title {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--texte);
-  margin-bottom: 8px;
+  margin-bottom: 14px;
   text-transform: capitalize;
 }
 
 .activite-schedule {
   font-size: 0.85rem;
   color: var(--texte-secondaire);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .location {
   color: var(--accent);
   font-weight: 600;
+  font-style: italic;          /* Comme sur l'image */
 }
 
 .activite-details {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 12px;
+  justify-content: center;     /* Badges centrés */
+  gap: 8px;
+  margin-top: 16px;
 }
 
 .detail-badge {
-  background: rgba(165, 180, 252, 0.12);
-  color: var(--accent);
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 3px 10px;
+  background: transparent;
+  color: var(--texte-secondaire);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 4px 14px;
   border-radius: 50px;
-  border: 1px solid rgba(165, 180, 252, 0.2);
+  border: 1px solid rgba(165, 180, 252, 0.35);
 }
 
 /* ================================
@@ -1389,5 +1393,6 @@ body {
     gap: 16px;
   }
 }
+
 
 
