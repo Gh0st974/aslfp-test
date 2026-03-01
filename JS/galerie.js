@@ -12,6 +12,15 @@ let filteredPhotos = [];
 let currentLightboxIndex = 0;
 let activeFilter = 'all';
 
+// ====== MÉLANGE ALÉATOIRE (Fisher-Yates) ======
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 // ====== PARSER CSV ======
 function parseCSV(csvText) {
   const lines = csvText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
@@ -78,7 +87,7 @@ async function fetchPhotosFromSheet() {
     console.log('📸 Données brutes du Sheet:', rows);
 
     return rows
-      .filter(row => row.titre && row.lien_photo) // ignorer les lignes vides
+      .filter(row => row.titre && row.lien_photo)
       .map(row => ({
         src: convertDriveLink(row.lien_photo),
         title: row.titre,
@@ -146,9 +155,9 @@ function renderGallery() {
   const grid = document.getElementById('galerie-grid');
   if (!grid) return;
 
-  // Filtrer
+  // Filtrer — mélange aléatoire uniquement sur "Toutes"
   filteredPhotos = activeFilter === 'all'
-    ? [...photos]
+    ? shuffleArray([...photos])
     : photos.filter(p => p.category === activeFilter);
 
   if (filteredPhotos.length === 0) {
