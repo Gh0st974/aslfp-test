@@ -96,11 +96,9 @@ function parseCSV(csv) {
 }
 
 function sheetRowToEvent(row) {
-  // Récupère formUrl quelle que soit la casse
   const formUrl = (row.formUrl || row.formurl || row.FormUrl || row.FORMURL || '').trim();
   const type = (row.type || 'default').toLowerCase().trim();
 
-  // Construire l'horaire
   let horaire = '';
   if (row.horaire_debut) {
     horaire = row.horaire_debut;
@@ -167,7 +165,6 @@ if (calendarEl) {
       info.jsEvent.preventDefault();
       const props = info.event.extendedProps;
 
-      // Construire le message de détails
       let details = `📌 ${info.event.title}\n`;
       if (props.description) details += `\n📝 ${props.description}`;
       if (props.lieu)        details += `\n📍 ${props.lieu}`;
@@ -226,7 +223,6 @@ function displayUpcomingEventsWithCTA(events) {
     const type = (ev.extendedProps?.type || '').toLowerCase();
     const isCompetition = type.startsWith('comp');
 
-    // ✅ Lecture de formUrl (cohérent avec sheetRowToEvent)
     const formUrl = ev.extendedProps?.formUrl || '';
     const hasFormUrl = formUrl.trim() !== '';
 
@@ -248,7 +244,6 @@ function displayUpcomingEventsWithCTA(events) {
     else if (diffDays === 1) countdownStr = "⏳ Demain !";
     else                     countdownStr = `⏳ Dans ${diffDays} jours`;
 
-    // ✅ Bouton S'inscrire : inscription = oui ET formUrl rempli ET dans les 15 jours
     let btnHtml = '';
     if (ev.extendedProps?.inscription && hasFormUrl && diffDays <= 15) {
       btnHtml = `<a href="${formUrl}" target="_blank" class="btn-inscription">S'inscrire</a>`;
@@ -274,6 +269,62 @@ function displayUpcomingEventsWithCTA(events) {
 
     container.appendChild(card);
   });
+}
+
+// ================================
+//   ACTIVITÉS (Google Sheets)
+// ================================
+const CSV_ACTIVITES    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSe1AgQW7wWJlGH5Spa-X0rAWq6aoe-x78nlb20REWQNhDndZYP-Kz5YlrOb-9idBAl3igD1rrWnRmo/pub?gid=1026891843&single=true&output=csv';
+const CSV_INSCRIPTIONS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSe1AgQW7wWJlGH5Spa-X0rAWq6aoe-x78nlb20REWQNhDndZYP-Kz5YlrOb-9idBAl3igD1rrWnRmo/pub?gid=0&single=true&output=csv';
+
+async function chargerActivites() {
+  const container = document.getElementById('activites-container');
+  if (!container) return;
+
+  try {
+    const [resActivites, resInscriptions] = await Promise.all([
+      fetch(CSV_ACTIVITES),
+      fetch(CSV_INSCRIPTIONS)
+    ]);
+
+    const activites    = parseCSV(await resActivites.text());
+    const inscriptions = parseCSV(await resInscriptions.text());
+
+    // Compter les inscrits par clé "activite - creneau"
+    const compteur = {};
+    inscriptions.forEach(ins => {
+      const cle = (ins.activites_choisies || '').trim();
+      if (cle) {
+        compteur[cle] = (compteur[cle] || 0) + 1;
+      }
+    });
+
+    container.innerHTML = '';
+
+    activites.forEach(act => {
+      const cle       = `${act.activite} - ${act.creneau}`;
+      const placesMax = parseInt(act.places_max) || 0;
+      const inscrits  = compteur[cle] || 0;
+      const restantes = placesMax - inscrits;
+      const complet   = restantes <= 0;
+
+      const carte = document.createElement('div');
+      carte.className = `carte-activite ${complet ? 'complet' : ''}`;
+      carte.innerHTML = `
+        <h3>${act.activite}</h3>
+        <p>📅 ${act.creneau}</p>
+        <p>👥 ${inscrits} / ${placesMax} inscrits</p>
+        <p class="${complet ? 'rouge' : 'vert'}">
+          ${complet ? 'Complet ❌' : `${restantes} place(s) restante(s) ✅`}
+        </p>
+      `;
+      container.appendChild(carte);
+    });
+
+  } catch (err) {
+    console.error('Erreur chargement activités :', err);
+    if (container) container.innerHTML = '<p style="color:#888;">Impossible de charger les activités.</p>';
+  }
 }
 
 // ================================
@@ -348,4 +399,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 5. Swiper galerie
   initSwiper();
+
+  // 6. Charger les activités
+  chargerActivites();
 });
